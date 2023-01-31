@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>JS and HTML test</title>
+</head>
+<body>
+    <div class="quiz">
+        <div class="result">
+        </div>
+        <div class="question-container" id="question">
+            Questions.
+        </div>
+        <div class="option-container">
+            <button class="option" id="op1">answer 1</button>
+            <button class="option" id="op2">answer 2</button>
+            <button class="option" id="op3">answer 3</button>
+            <button class="option" id="op4">answer 4</button>
+        </div>
+        <div class="navigation">
+            <button class="back">Back</button>
+            <button class="evaluate">Evaluate</button>
+            <button class="next">Next</button>
+            <button class="final">final</button>
+        </div>
+    </div>
+</body>
+<script>
+   
+let Questions = [{
+		id: 0,
+		q: "что из перечисленного не является основным принципом ООП",
+		a: [{ text: "Полиморфизм", isCorrect: false },
+			{ text: "Наследование", isCorrect: false },
+			{ text: "Абстракция", isCorrect: true },
+			{ text: "Инкапсуляция", isCorrect: false }
+		]
+	},
+	{
+		id: 1,
+		q: " В чем отличие между локальной и глобальной переменной?",
+		a: [{ text: "отличий нет", isCorrect: false},
+			{ text: "локальные видны повсюду, глобальные только в функциях", isCorrect: false },
+			{ text: "глобальные можно переопределять, локальные нельзя", isCorrect: false },
+			{ text: "глобальные видны повсюду, локальные только в функциях", isCorrect: true }
+		]
+	},
+	{
+		id: 2,
+		q: "Язык JavaScript является подвидом языка Java - верно?",
+		a: [{ text: "yes", isCorrect: false },
+			{ text: "no", isCorrect: false },
+			{ text: "наоборот, Java - подвид JavaScript", isCorrect: true },
+			{ text: "maybe", isCorrect: false }
+		]
+	},
+    {
+		id: 3,
+		q: "Как объявить функцию в JavaScript?",
+		a: [{ text: "function:MyFunction()", isCorrect: false },
+			{ text: "function MyFunction()", isCorrect: false },
+			{ text: "function = New MyFunction()", isCorrect: true },
+			{ text: "function = MyFunction()", isCorrect: false }
+		]
+	},
+	{
+		id: 4,
+		q: "JSON - это",
+		a: [{ text: "JavaScript Object Notation", isCorrect: false },
+			{ text: "название следующей версии JavaScript", isCorrect: false },
+			{ text: "имя создателя JavaScript", isCorrect: true },
+			{ text: "JavaScript Over Network", isCorrect: false }
+		]
+	},
+	{
+		id: 5,
+		q: "С помощью какого тега в таблицах создаются строки?",
+		a: [{ text: "table", isCorrect: false },
+			{ text: "th", isCorrect: false },
+			{ text: "tr", isCorrect: true },
+			{ text: "td", isCorrect: false }
+		]
+	},
+	{
+		id: 6,
+		q: "С помощью какого тега в таблицах создаются строки?",
+		a: [{ text: "table", isCorrect: false },
+			{ text: "th", isCorrect: false },
+			{ text: "tr", isCorrect: true },
+			{ text: "td", isCorrect: false }
+		]
+	},
+	{
+		id: 7,
+		q: "С помощью какого свойства таблицы определяются её границы?",
+		a: [{ text: "property", isCorrect: false },
+			{ text: "gran", isCorrect: false },
+			{ text: "border", isCorrect: true },
+			{ text: "width", isCorrect: false }
+		]
+	},
+	{
+		id: 8,
+		q: " Какой тег нужно использовать для названия таблицы?",
+		a: [{ text: "body", isCorrect: false },
+			{ text: "head", isCorrect: false },
+			{ text: "caption", isCorrect: true },
+			{ text: "name", isCorrect: false }
+		]
+	},
+	{
+		id: 9,
+		q: " С помощью какого атрибута объединяются ячейки таблицы по горизонтали?",
+		a: [{ text: "unity", isCorrect: false },
+			{ text: "union", isCorrect: false },
+			{ text: "colspan", isCorrect: true },
+			{ text: "rowspan", isCorrect: false }
+		]
+	},
+	{
+		id: 10,
+		q: " С помощью какого атрибута объединяются ячейки таблицы по горизонтали?",
+		a: [{ text: "unity", isCorrect: false },
+			{ text: "union", isCorrect: false },
+			{ text: "colspan", isCorrect: true },
+			{ text: "rowspan", isCorrect: false }
+		]
+	},
+	{
+		id: 11,
+		q: "Какую кодировку следует использовать на сайте?",
+		a: [{ text: "UTF-16", isCorrect: false },
+			{ text: "WINSOWS-1251", isCorrect: false },
+			{ text: "UTF-8", isCorrect: true },
+			{ text: "UTF-32", isCorrect: false }
+		]
+	},
+	{
+		id: 12,
+		q: "Что позволяет указать тег title?",
+		a: [{ text: "Название таблицы", isCorrect: false },
+			{ text: "Название маркированного списка", isCorrect: false },
+			{ text: "Название страницы, которое также будет отображено в поисковиках", isCorrect: true },
+			{ text: "Название ячейки", isCorrect: false }
+		]
+	},
+	{
+		id: 13,
+		q: "С помощью какого свойства таблицы можно убрать отступы между границами ячеек?",
+		a: [{ text: "clap", isCorrect: false },
+			{ text: "bold", isCorrect: false },
+			{ text: "border-collapse", isCorrect: true },
+			{ text: "shift", isCorrect: false }
+		]
+	},
+	{
+		id: 14,
+		q: "Как выделить текст курсивом?",
+		a: [{ text: "hr", isCorrect: false },
+			{ text: "p", isCorrect: false },
+			{ text: "em", isCorrect: true },
+			{ text: "c", isCorrect: false }
+		]
+	},
+	{
+		id: 15,
+		q: "Какой тег при создании страницы не является обязательным?",
+		a: [{ text: "head", isCorrect: false },
+			{ text: "body", isCorrect: false },
+			{ text: "strong", isCorrect: true },
+			{ text: "dostype", isCorrect: false }
+		]
+	},
+	{
+		id: 16,
+		q: "Какой тег при создании страницы не является обязательным?",
+		a: [{ text: "head", isCorrect: false },
+			{ text: "body", isCorrect: false },
+			{ text: "strong", isCorrect: true },
+			{ text: "dostype", isCorrect: false }
+		]
+	},
+	{
+		id: 17,
+		q: "Какое значение атрибута type указывается для поля-галочки в форме?",
+		a: [{ text: "name", isCorrect: false },
+			{ text: "radio", isCorrect: false },
+			{ text: "checkbox", isCorrect: true },
+			{ text: "id", isCorrect: false }
+		]
+	},
+	{
+		id: 18,
+		q: "С помощью какого атрибута задаётся ширина поля textarea?",
+		a: [{ text: "rows", isCorrect: false },
+			{ text: "width", isCorrect: false },
+			{ text: "cols", isCorrect: true },
+			{ text: "size", isCorrect: false }
+		]
+	},
+	{
+		id: 19,
+		q: "С помощью какого свойства изменяется ширина таблицы?",
+		a: [{ text: "length", isCorrect: false },
+			{ text: "size", isCorrect: false },
+			{ text: "width", isCorrect: true },
+			{ text: "count", isCorrect: false }
+		]
+	},
+	{
+		id: 20,
+		q: "Вам понравились вопросы?",
+		a: [{ text: "не так много", isCorrect: false },
+			{ text: "да", isCorrect: false },
+			{ text: "много", isCorrect: true },
+			{ text: "нет", isCorrect: false }
+		]
+	},
+]
+
+let start = true;
+function iterate(id) {
+	let result = document.getElementsByClassName("result");
+	result[0].innerText = "";
+	let question = document.getElementById("question");
+	question.innerText = Questions[id].q;
+	let op1 = document.getElementById('op1');
+	let op2 = document.getElementById('op2');
+	let op3 = document.getElementById('op3');
+	let op4 = document.getElementById('op4');
+	op1.innerText = Questions[id].a[0].text;
+	op2.innerText = Questions[id].a[1].text;
+	op3.innerText = Questions[id].a[2].text;
+	op4.innerText = Questions[id].a[3].text;
+	op1.value = Questions[id].a[0].isCorrect;
+	op2.value = Questions[id].a[1].isCorrect;
+	op3.value = Questions[id].a[2].isCorrect;
+	op4.value = Questions[id].a[3].isCorrect;
+	let selected = "";
+	op1.addEventListener("click", () => {
+		op1.style.backgroundColor = "lightgoldenrodyellow";
+		op2.style.backgroundColor = "lightskyblue";
+		op3.style.backgroundColor = "lightskyblue";
+		op4.style.backgroundColor = "lightskyblue";
+		selected = op1.value;
+	})
+	op2.addEventListener("click", () => {
+		op1.style.backgroundColor = "lightskyblue";
+		op2.style.backgroundColor = "lightgoldenrodyellow";
+		op3.style.backgroundColor = "lightskyblue";
+		op4.style.backgroundColor = "lightskyblue";
+		selected = op2.value;
+	})
+	op3.addEventListener("click", () => {
+		op1.style.backgroundColor = "lightskyblue";
+		op2.style.backgroundColor = "lightskyblue";
+		op3.style.backgroundColor = "lightgoldenrodyellow";
+		op4.style.backgroundColor = "lightskyblue";
+		selected = op3.value;
+	})
+	op4.addEventListener("click", () => {
+		op1.style.backgroundColor = "lightskyblue";
+		op2.style.backgroundColor = "lightskyblue";
+		op3.style.backgroundColor = "lightskyblue";
+		op4.style.backgroundColor = "lightgoldenrodyellow";
+		selected = op4.value;
+	})
+	let evaluate = document.getElementsByClassName("evaluate");
+	evaluate[0].addEventListener("click", () => {
+		if (selected == "true") {
+			result[0].innerHTML = "True";
+			result[0].style.color = "green";
+		} else {
+			result[0].innerHTML = "False";
+			result[0].style.color = "red";
+		}
+	})
+}
+
+if (start) {
+	iterate("0");
+}
+
+let next = document.getElementsByClassName('next')[0];
+let back = document.getElementsByClassName('back')[0];
+let id = 0;
+
+next.addEventListener("click", () => {
+	start = false;
+	if (id < 20) {
+		id++;
+		iterate(id);
+		console.log(id);
+	}
+	if(id == 20){
+		alert('You have finished the test');
+	}
+})
+back.addEventListener('click', () => {
+    op1 = false;
+    if(id<20){
+        id--;
+        iterate(id);
+        console.log(id);
+    }
+})
+</script>
+</html>
